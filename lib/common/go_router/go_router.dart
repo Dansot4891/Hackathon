@@ -1,18 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:wagle_front/Feed/view/feed_detail_screen.dart';
 import 'package:wagle_front/common/const/data.dart';
+import 'package:wagle_front/common/view/root_tab.dart';
 import 'package:wagle_front/common/view/splash_screen.dart';
 import 'package:wagle_front/user/view/login_screen.dart';
-
-import '../../screen/home.dart';
 
 part 'go_router.g.dart';
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
   final router = GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/root',
     // redirect: (_, state) {
     //   return _redirectLogin(ref, state);
     // },
@@ -26,8 +26,14 @@ GoRouter goRouter(GoRouterRef ref) {
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
-        path: '/home',
-        builder: (context, state) => const InstaCloneHome(),
+        path: '/root',
+        builder: (context, state) => const RootTab(),
+      ),
+      GoRoute(
+        path: '/course/:id',
+        builder: (context, state) => FeedDetailScreen(
+          id: state.pathParameters['id']!,
+        ),
       ),
     ],
   );

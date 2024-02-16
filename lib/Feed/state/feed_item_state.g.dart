@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'go_router.dart';
+part of 'feed_item_state.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouterHash() => r'b2fa8d4ad7792684e6dc82054c06e8cf76f6993a';
+String _$feedStateHash() => r'18a6f22506083ebce95920037871b8ed1b48c3fa';
 
-/// See also [goRouter].
-@ProviderFor(goRouter)
-final goRouterProvider = Provider<GoRouter>.internal(
-  goRouter,
-  name: r'goRouterProvider',
+/// See also [FeedState].
+@ProviderFor(FeedState)
+final feedStateProvider = NotifierProvider<FeedState, FeedStateValue>.internal(
+  FeedState.new,
+  name: r'feedStateProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$goRouterHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$feedStateHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef GoRouterRef = ProviderRef<GoRouter>;
+typedef _$FeedState = Notifier<FeedStateValue>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

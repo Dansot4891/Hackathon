@@ -16,6 +16,7 @@ class MyApp extends ConsumerWidget {
     ratio = Size(MediaQuery.sizeOf(context).width / 400,
         MediaQuery.sizeOf(context).height / 900);
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: const ColorScheme.light(
             primary: Color(0xFFF9D1E9), secondary: Colors.black),

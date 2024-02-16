@@ -40,7 +40,7 @@ class LoginScreen extends ConsumerWidget {
             SocialLoginButton(
               buttonType: SocialLoginButtonType.apple,
               onPressed: () {
-                context.push('/home');
+                context.go('/root');
               },
             ),
             const SizedBox(
