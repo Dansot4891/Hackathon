@@ -12,10 +12,10 @@ part 'go_router.g.dart';
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
   final router = GoRouter(
-    initialLocation: '/splash',
-    redirect: (_, state) {
-      return _redirectLogin(ref, state);
-    },
+    initialLocation: '/login',
+    // redirect: (_, state) {
+    //   return _redirectLogin(ref, state);
+    // },
     routes: <RouteBase>[
       GoRoute(
         path: '/splash',
