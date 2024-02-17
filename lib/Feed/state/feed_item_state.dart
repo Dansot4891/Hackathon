@@ -12,7 +12,7 @@ enum FeedStateValue {
 class FeedState extends _$FeedState {
   @override
   FeedStateValue build() {
-    return FeedStateValue.get;
+    return FeedStateValue.loading;
   }
 
   void changeState({required FeedStateValue val}) {

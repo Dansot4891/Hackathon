@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wagle_front/Feed/component/feed_comment.dart';
-import 'package:wagle_front/Feed/dummy/feed_comment_dummy.dart';
 import 'package:wagle_front/Feed/model/feed_detail_model.dart';
+import 'package:wagle_front/Feed/view/feed_comment_screen.dart';
 
 import '../model/feed_comment_model.dart';
+import '../repository/feed_repository.dart';
 
 class FeedPost extends ConsumerStatefulWidget {
   final String courseId;
@@ -14,16 +15,17 @@ class FeedPost extends ConsumerStatefulWidget {
   final String memberName;
   final String content;
   final int like;
+  final List<String> imgUrl;
 
-  const FeedPost({
-    super.key,
-    required this.courseId,
-    required this.postId,
-    required this.name,
-    required this.memberName,
-    required this.content,
-    required this.like,
-  });
+  const FeedPost(
+      {super.key,
+      required this.courseId,
+      required this.postId,
+      required this.name,
+      required this.memberName,
+      required this.content,
+      required this.like,
+      required this.imgUrl});
 
   factory FeedPost.fromJson({required FeedItemDetailModel model}) {
     return FeedPost(
@@ -33,6 +35,7 @@ class FeedPost extends ConsumerStatefulWidget {
       memberName: model.memberName,
       content: model.content,
       like: model.like,
+      imgUrl: model.imgUrl,
     );
   }
 
@@ -42,6 +45,12 @@ class FeedPost extends ConsumerStatefulWidget {
 
 class _FeedPostState extends ConsumerState<FeedPost> {
   List<bool> isSelected = [false];
+  bool recommend = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,17 +98,23 @@ class _FeedPostState extends ConsumerState<FeedPost> {
               Row(
                 children: [
                   InkWell(
-                    onTap: () {},
-                    child: Container(
+                    onTap: () {
+                      setState(() {
+                        recommend = !recommend;
+                      });
+                    },
+                    child: SizedBox(
                       width: 70,
                       height: 35,
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 1),
-                          borderRadius: BorderRadius.circular(8)),
+                      // decoration: BoxDecoration(
+                      //     border: Border.all(width: 1, color: Colors.grey),
+                      //     borderRadius: BorderRadius.circular(8)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.thumb_up),
+                          Icon(recommend
+                              ? Icons.thumb_up
+                              : Icons.thumb_up_alt_outlined),
                           const SizedBox(
                             width: 5,
                           ),
@@ -108,13 +123,19 @@ class _FeedPostState extends ConsumerState<FeedPost> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: const Icon(CupertinoIcons.chat_bubble),
-                  ),
+                  // const SizedBox(
+                  //   width: 10,
+                  // ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     //   {
+                  //     //     'memberId': 123,
+                  //     //   'postId': int.parse(postId),
+                  //     //   'comment': '짱멋지다',
+                  //     // }
+                  //   },
+                  //   child: const Icon(CupertinoIcons.chat_bubble),
+                  // ),
                 ],
               ),
               ToggleButtons(
@@ -138,6 +159,7 @@ class _FeedPostState extends ConsumerState<FeedPost> {
                   setState(() {
                     isSelected[index] = !isSelected[index];
                   });
+                  FeedRepository.getComment(postId: widget.postId);
                 },
               ),
             ],
@@ -146,7 +168,7 @@ class _FeedPostState extends ConsumerState<FeedPost> {
         const SizedBox(
           height: 15,
         ),
-        if (isSelected[0]) _renderComment(commentdummy),
+        if (isSelected[0]) FeedCommentScreen(postId: widget.postId),
       ],
     );
   }

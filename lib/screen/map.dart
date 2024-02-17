@@ -10,6 +10,7 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   late GoogleMapController mapController;
+  TextEditingController mapSearch = TextEditingController();
 
   final LatLng _center = const LatLng(
     37.540853,
@@ -22,12 +23,29 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      onMapCreated: _onMapCreated,
-      initialCameraPosition: CameraPosition(
-        target: _center,
-        zoom: 16.0,
-      ),
+    return Stack(
+      children: [
+        GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 16.0,
+          ),
+        ),
+        TextField(
+  style: TextStyle(fontSize: 22),
+  textAlign: TextAlign.left,
+  controller: mapSearch,
+  decoration: InputDecoration(
+    filled: true,
+    fillColor: Colors.white,
+    errorStyle: TextStyle(fontSize: 10),
+    contentPadding: EdgeInsets.zero,
+    hintText: ' 입력해주세요.',
+    border: OutlineInputBorder(),
+  ),
+),
+      ],
     );
   }
 }

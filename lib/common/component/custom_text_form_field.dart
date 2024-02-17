@@ -8,6 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscureText;
   final bool autofocus;
   final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
 
   const CustomTextFormField(
       {required this.onChanged,
@@ -15,6 +16,7 @@ class CustomTextFormField extends StatelessWidget {
       this.errorText,
       this.obscureText = false,
       this.autofocus = false,
+      this.controller,
       super.key});
 
   @override
@@ -23,6 +25,7 @@ class CustomTextFormField extends StatelessWidget {
         borderSide: BorderSide(color: INPUT_BORDER_COLOR, width: 1));
 
     return TextFormField(
+      controller: controller,
       obscureText: obscureText,
       autofocus: autofocus,
       onChanged: onChanged,
@@ -32,7 +35,7 @@ class CustomTextFormField extends StatelessWidget {
           hintText: hintText,
           errorText: errorText,
           hintStyle: const TextStyle(
-            color: BODY_TEXT_COLOR,
+            color: Colors.grey,
             fontSize: 14,
           ),
           fillColor: INPUT_BG_COLOR,

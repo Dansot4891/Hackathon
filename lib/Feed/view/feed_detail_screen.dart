@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wagle_front/Feed/dummy/feed_detail_dummy.dart';
 import 'package:wagle_front/Feed/model/feed_detail_model.dart';
 
 import '../../common/layout/default_layout.dart';
 import '../component/feed_post.dart';
 import '../repository/feed_repository.dart';
-import '../state/feed_item_state.dart';
 
 class FeedDetailScreen extends ConsumerStatefulWidget {
   final String id;
@@ -21,69 +19,74 @@ class FeedDetailScreen extends ConsumerStatefulWidget {
 class _FeedDetailScreenState extends ConsumerState<FeedDetailScreen> {
   List<bool> isSelected = [false];
 
-  late final Map<String, dynamic> courses;
-
-  Future<void> getPosts() async {
-    try {
-      ref
-          .read(feedStateProvider.notifier)
-          .changeState(val: FeedStateValue.loading);
-      courses = await FeedRepository.getPost(courseId: widget.id);
-      ref.read(feedStateProvider.notifier).changeState(val: FeedStateValue.get);
-    } on Exception catch (_) {
-      ref
-          .read(feedStateProvider.notifier)
-          .changeState(val: FeedStateValue.error);
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // getPosts();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(feedStateProvider);
-    if (state == FeedStateValue.loading) {
-      return const Center(
-        child: CircularProgressIndicator(
-          color: Colors.black,
-        ),
-      );
-    } else if (state == FeedStateValue.error) {
-      return const Center(
-        child: DefaultLayout(child: Text("에러가 발생했습니다!")),
-      );
-    } else {
-      return DefaultLayout(
-        title: "",
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: CustomScrollView(
-            slivers: [
-              _renderPost(detaildummy),
-            ],
-          ),
-        ),
-      );
-    }
+    return FutureBuilder(
+        future: FeedRepository.getPost(courseId: widget.id),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData ||
+              snapshot.connectionState == ConnectionState.waiting) {
+            return const DefaultLayout(
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Colors.black,
+                ),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: DefaultLayout(child: Text("에러가 발생했습니다!")),
+            );
+          } else {
+            return DefaultLayout(
+              title: "",
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: CustomScrollView(
+                  slivers: [
+                    _renderPost(snapshot.data!),
+                  ],
+                ),
+              ),
+            );
+          }
+        });
   }
 }
 
-SliverPadding _renderPost(List<FeedItemDetailModel> details) {
+SliverPadding _renderPost(List details) {
   return SliverPadding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       sliver: SliverList(
-          delegate: SliverChildBuilderDelegate(
-              childCount: details.length,
-              (_, index) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: FeedPost.fromJson(
-                      model: details[index],
-                    ),
-                  ))));
+          delegate: SliverChildBuilderDelegate(childCount: details.length,
+              (_, index) {
+        final item = details[index];
+        // print(item);
+        final model = FeedItemDetailModel(
+          courseId: "asdfasdf",
+          postId: item['postId'].toString(),
+          name: item['name'],
+          memberName: item['memberName'],
+          content: item['content'],
+          like: 132,
+          emoge: '\u{1f60D}',
+          imgUrl: [],
+        );
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            children: [
+              FeedPost.fromJson(
+                model: model,
+              ),
+              if (index != details.length - 1)
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                ),
+            ],
+          ),
+        );
+      })));
 }

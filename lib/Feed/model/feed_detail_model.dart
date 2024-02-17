@@ -11,15 +11,18 @@ class FeedItemDetailModel {
   final String content;
   final int like;
   final String emoge;
+  final List<String> imgUrl;
 
-  const FeedItemDetailModel(
-      {required this.courseId,
-      required this.postId,
-      required this.name,
-      required this.memberName,
-      required this.content,
-      required this.like,
-      required this.emoge});
+  const FeedItemDetailModel({
+    required this.courseId,
+    required this.postId,
+    required this.name,
+    required this.memberName,
+    required this.content,
+    required this.like,
+    required this.emoge,
+    required this.imgUrl,
+  });
 
   factory FeedItemDetailModel.fromJson(Map<String, dynamic> json) =>
       _$FeedItemDetailModelFromJson(json);

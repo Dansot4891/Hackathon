@@ -5,23 +5,32 @@ final dio = Dio();
 final ip = 'http://wagle-load-1082500141.ap-northeast-2.elb.amazonaws.com';
 
 class FeedRepository {
-  static Future<Map<String, dynamic>> getCourse() async {
-    final resp = await dio.get('$ip/v1/course/search');
-    print(resp);
+  static Future<List> getCourse() async {
+    // dio.interceptors.addAll([]);
+    final resp = await dio.get('$ip/v1/course/all');
     return resp.data;
   }
 
-  static Future<Map<String, dynamic>> getPost(
-      {required String courseId}) async {
+  static Future<List> getPost({required String courseId}) async {
     final resp = await dio.get('$ip/v1/course/$courseId');
-    print(resp);
-    return resp.data;
+    // print(resp.data['postCourseResponseDtoList']);
+    return resp.data['postCourseResponseDtoList'];
   }
 
-  static Future<Map<String, dynamic>> getComment(
-      {required String postId}) async {
+  static Future<List> getComment({required String postId}) async {
     final resp = await dio.get('$ip/v1/post/$postId/comment');
-    print(resp);
-    return resp.data;
+    // print(resp.data['data']);
+    return resp.data['data'];
+  }
+
+  static Future<void> postComment(
+      {required String postId, required Map<String, dynamic> data}) async {
+    // print("postComment");
+    await dio.post('$ip/v1/post/$postId/comment', data: data);
+  }
+
+  static Future<void> postRecommend({required String postId}) async {
+    print("postRecommend");
+    await dio.post('$ip/v1/post/$postId/like');
   }
 }

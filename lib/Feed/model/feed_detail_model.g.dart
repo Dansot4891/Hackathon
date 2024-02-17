@@ -15,6 +15,8 @@ FeedItemDetailModel _$FeedItemDetailModelFromJson(Map<String, dynamic> json) =>
       content: json['content'] as String,
       like: json['like'] as int,
       emoge: json['emoge'] as String,
+      imgUrl:
+          (json['imgUrl'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$FeedItemDetailModelToJson(
@@ -27,4 +29,5 @@ Map<String, dynamic> _$FeedItemDetailModelToJson(
       'content': instance.content,
       'like': instance.like,
       'emoge': instance.emoge,
+      'imgUrl': instance.imgUrl,
     };

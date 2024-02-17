@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:wagle_front/Feed/view/feed_screen.dart';
 import 'package:wagle_front/common/layout/default_layout.dart';
 import 'package:wagle_front/common/view/splash_screen.dart';
+import 'package:wagle_front/screen/map.dart';
+import 'package:wagle_front/screen/mypage.dart';
 
 import '../const/colors.dart';
 
@@ -55,10 +57,10 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
       child: TabBarView(
           controller: tabController,
           physics: const NeverScrollableScrollPhysics(),
-          children: const [
+          children: [
             FeedScreen(),
-            SplashScreen(),
-            SplashScreen(),
+            MapPage(),
+            MyPage(),
           ]),
     );
   }

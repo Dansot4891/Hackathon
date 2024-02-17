@@ -6,17 +6,23 @@ class FeedComment extends StatelessWidget {
   final String id;
   final String username;
   final String comment;
+  final String emoge;
 
   const FeedComment({
     super.key,
     required this.id,
     required this.username,
     required this.comment,
+    required this.emoge,
   });
 
   factory FeedComment.fromJson({required FeedItemCommentModel model}) {
     return FeedComment(
-        id: model.id, username: model.username, comment: model.comment);
+      id: model.id,
+      username: model.username,
+      comment: model.comment,
+      emoge: model.emoge,
+    );
   }
 
   @override
@@ -30,7 +36,7 @@ class FeedComment extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _renderLeading(width),
+          _renderLeading(width, emoge),
           const SizedBox(
             width: 5,
           ),
@@ -56,9 +62,10 @@ class FeedComment extends StatelessWidget {
   }
 }
 
-Widget _renderLeading(double width) {
-  return const Text(
+Widget _renderLeading(double width, String emoge) {
+  return Text(
     '\u{1f60D}',
+    // emoge,
     style: TextStyle(fontSize: 30),
   );
 }

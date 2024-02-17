@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:wagle_front/Feed/component/feed_item.dart';
+import 'package:wagle_front/Feed/model/feed_model.dart';
 import 'package:wagle_front/Feed/repository/feed_repository.dart';
 import 'package:wagle_front/Feed/state/feed_item_state.dart';
-
-import '../dummy/feed_dummy.dart';
 
 class FeedScreen extends ConsumerStatefulWidget {
   const FeedScreen({super.key});
@@ -15,7 +14,7 @@ class FeedScreen extends ConsumerStatefulWidget {
 }
 
 class _FeedScreenState extends ConsumerState<FeedScreen> {
-  late final Map<String, dynamic> courses;
+  late List? courses;
 
   Future<void> getCourses() async {
     try {
@@ -24,7 +23,9 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
           .changeState(val: FeedStateValue.loading);
       courses = await FeedRepository.getCourse();
       ref.read(feedStateProvider.notifier).changeState(val: FeedStateValue.get);
-    } on Exception catch (_) {
+    } on Exception catch (e) {
+      print("getCourses");
+      print(e);
       ref
           .read(feedStateProvider.notifier)
           .changeState(val: FeedStateValue.error);
@@ -35,7 +36,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // getCourses();
+      getCourses();
     });
   }
 
@@ -58,21 +59,29 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
           child: AnimationLimiter(
             child: ListView.separated(
               itemBuilder: (context, index) {
-                final item = dummy[index];
+                final item = courses![index];
+                final model = FeedItemModel(
+                  name: item['name'],
+                  content: item['content'],
+                  like: item['like'],
+                  id: item['id'].toString(),
+                  emoge: item['emoge'],
+                );
                 return AnimationConfiguration.staggeredList(
                   position: index,
                   child: SlideAnimation(
                     verticalOffset: 40,
                     child: FadeInAnimation(
-                      child: FeedItem.fromJson(model: item),
+                      child: FeedItem.fromJson(model: model),
                     ),
                   ),
                 );
               },
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 15,
+              separatorBuilder: (context, index) => const Divider(
+                thickness: 0.5,
+                color: Colors.grey,
               ),
-              itemCount: dummy.length,
+              itemCount: courses!.length,
             ),
           ));
     }

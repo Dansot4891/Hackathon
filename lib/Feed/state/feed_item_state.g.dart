@@ -6,7 +6,7 @@ part of 'feed_item_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$feedStateHash() => r'18a6f22506083ebce95920037871b8ed1b48c3fa';
+String _$feedStateHash() => r'f84d2afac0646df2f868cc151175ecbb463717e0';
 
 /// See also [FeedState].
 @ProviderFor(FeedState)

@@ -71,13 +71,6 @@ class FeedItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
-                    height: ratio.height * 40,
-                    width: ratio.width * 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.blue.shade300),
-                  ),
                   SizedBox(
                     width: ratio.width * 8,
                   ),
@@ -159,9 +152,6 @@ class _InstaCloneHomeState extends State<InstaCloneHome> {
           title: Text(
         '놀면서 살자',
       )),
-      // appBar: index == 0 ? AppBar(
-      //   title: Text('데이트데이트',)
-      // ) : null ,
       body: InstaBody(index: index),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: index,
